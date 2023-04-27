@@ -4,7 +4,7 @@ import Layout from "../components/Layout";
 import Post, { PostProps } from "../components/Post";
 import prisma from '../lib/prisma'
 
-const PAGE_SIZE = 2;
+const PAGE_SIZE = 10;
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const page = parseInt(query.page as string) || 1;
@@ -24,6 +24,9 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       },
       take: PAGE_SIZE,
       skip,
+      orderBy: {
+        id: 'desc',
+      },
     }),
     prisma.post.count({
       where: {
@@ -56,7 +59,7 @@ const Blog: React.FC<Props> = ({ feed, pageCount, page }) => {
     window.location.href = `/?page=${newPage}`;
   };
 
-  for (let i = 1; i <= pageCount; i++) {
+  for (let i = Math.max(page - 4, 1); i <= pageCount && i <= page + 4; i++) {
     pages.push(
       <button
         key={i}
@@ -69,7 +72,6 @@ const Blog: React.FC<Props> = ({ feed, pageCount, page }) => {
       </button>
     );
   }
-
   return (
     <Layout>
       <div className="page">
@@ -117,15 +119,16 @@ const Blog: React.FC<Props> = ({ feed, pageCount, page }) => {
           display: flex;
           justify-content: center;
           margin-top: 2rem;
+          margin-bottom: 2rem;
         }
 
         .pagination button {
-          margin: 0 0.5rem;
-          font-size: 1.2rem;
+          font-size: 1.4rem;
           border: none;
           background: none;
           cursor: pointer;
         }
+        
 
         .pagination .active {
           font-weight: bold;
