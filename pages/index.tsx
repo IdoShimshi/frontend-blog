@@ -2,6 +2,7 @@ import React from "react";
 import type { GetServerSideProps } from "next";
 import Layout from "../components/Layout";
 import Post, { PostProps } from "../components/Post";
+import Pagination from "../components/Pagination";
 import prisma from '../lib/prisma'
 
 const PAGE_SIZE = 10;
@@ -59,19 +60,6 @@ const Blog: React.FC<Props> = ({ feed, pageCount, page }) => {
     window.location.href = `/?page=${newPage}`;
   };
 
-  for (let i = Math.max(page - 4, 1); i <= pageCount && i <= page + 4; i++) {
-    pages.push(
-      <button
-        key={i}
-        className={i === page ? "active" : ""}
-        onClick={() => handlePageChange(i)}
-        disabled={i === page}
-        aria-disabled={i === page}
-      >
-        {i}
-      </button>
-    );
-  }
   return (
     <Layout>
       <div className="page">
@@ -84,21 +72,7 @@ const Blog: React.FC<Props> = ({ feed, pageCount, page }) => {
           ))}
         </main>
         <div className="pagination">
-          <button
-            className={page === 1 ? "disabled" : ""}
-            disabled={page === 1}
-            onClick={() => handlePageChange(page - 1)}
-          >
-            &laquo;
-          </button>
-          {pages}
-          <button
-            className={page === pageCount ? "disabled" : ""}
-            disabled={page === pageCount}
-            onClick={() => handlePageChange(page + 1)}
-          >
-            &raquo;
-          </button>
+          <Pagination props={{page, pageCount, handlePageChange}} />
         </div>
       </div>
       <style jsx>{`
