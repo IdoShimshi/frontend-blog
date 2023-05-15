@@ -5,6 +5,7 @@
 4. Do not use external libraries that provide the pagination component for you. If in doubt, contact the course staff.
 5. Deadline: 06/05/2023, end of day.
 6. Additionally, solve the [theoretical questions]( https://forms.gle/oPgpWcCSrcAN47QMA).
+7. Fill in repository details in https://moodle.bgu.ac.il/moodle/mod/questionnaire/view.php?id=2456041.
 
 
 ## The task
@@ -12,7 +13,6 @@ The task is to add [pagination](https://www.w3schools.com/css/css3_pagination.as
 1. Populate your database with 1 million fake examples.(See example in 'prisma/seed.ts')
 2. Front end component: show 10 posts on each page.
 3. Updating the backend query to the database (see relevant reading material below)
-4. To test that your implementation works, you'll also have to populate your databases with fake posts. 
 
 ## Intro
 This example shows how to implement a **fullstack app in TypeScript with [Next.js](https://nextjs.org/)** using [React](https://reactjs.org/) (frontend), [Next.js API routes](https://nextjs.org/docs/api-routes/introduction) and [Prisma Client](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client) (backend). It also demonstrates how to implement authentication using [NextAuth.js](https://next-auth.js.org/). The example uses an SQLite database file with some initial dummy data which you can find at [`./prisma/dev.database`](./prisma/dev.database).
