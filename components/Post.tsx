@@ -1,6 +1,7 @@
 import React from "react";
 import Router from "next/router";
 import ReactMarkdown from "react-markdown";
+import Video from "./Video";
 
 export type PostProps = {
   id: number;
@@ -11,7 +12,9 @@ export type PostProps = {
   } | null;
   content: string;
   published: boolean;
+  videoPublicId: string
 };
+
 
 const Post: React.FC<{ post: PostProps }> = ({ post }) => {
   const authorName = post.author ? post.author.name : "Unknown author";
@@ -20,6 +23,7 @@ const Post: React.FC<{ post: PostProps }> = ({ post }) => {
       <h2>{post.title}</h2>
       <small>By {authorName}</small>
       <ReactMarkdown children={post.content} />
+      <div><Video publicId={post.videoPublicId} /></div>
       <style jsx>{`
         div {
           color: inherit;

@@ -4,6 +4,7 @@ import Layout from "../components/Layout";
 import Post, { PostProps } from "../components/Post";
 import { useSession, getSession } from "next-auth/react";
 import prisma from '../lib/prisma'
+import { getPublicIds } from "../mongoDB/videoCollection";
 
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
@@ -24,13 +25,19 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
       },
     },
   });
+
+  const postIdToPublicId = await getPublicIds(drafts.map((post) => post.id));
+  const enrichedDrafts = drafts.map((post) =>({
+    ...post,
+    videoPublicId: postIdToPublicId[post.id],
+  }));
   return {
-    props: { drafts },
+    props: { enrichedDrafts },
   };
 };
 
 type Props = {
-  drafts: PostProps[];
+  enrichedDrafts: PostProps[];
 };
 
 const Drafts: React.FC<Props> = (props) => {
@@ -50,7 +57,7 @@ const Drafts: React.FC<Props> = (props) => {
       <div className="page">
         <h1>My Drafts</h1>
         <main>
-          {props.drafts.map((post) => (
+          {props.enrichedDrafts.map((post) => (
             <div key={post.id} className="post">
               <Post post={post} />
             </div>

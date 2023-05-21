@@ -4,6 +4,7 @@ import Layout from "../components/Layout";
 import Post, { PostProps } from "../components/Post";
 import Pagination from "../components/Pagination";
 import prisma from '../lib/prisma'
+import {getPublicIds} from "../mongoDB/videoCollection"
 
 const PAGE_SIZE = 10;
 
@@ -37,19 +38,25 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   ]);
 
   const pageCount = Math.ceil(count / PAGE_SIZE);
+  const postIdToPublicId = await getPublicIds(feed.map((post) => post.id));
+  const enrichedFeed = feed.map((post) =>({
+    ...post,
+    videoPublicId: postIdToPublicId[post.id],
+  }));
+  console.log(enrichedFeed[0]);
 
   return {
-    props: { feed, pageCount, page },
+    props: { enrichedFeed, pageCount, page },
   };
 };
 
 type Props = {
-  feed: PostProps[];
+  enrichedFeed: PostProps[];
   pageCount: number;
   page: number;
 };
 
-const Blog: React.FC<Props> = ({ feed, pageCount, page }) => {
+const Blog: React.FC<Props> = ({ enrichedFeed, pageCount, page }) => {
   const pages = [];
 
   const handlePageChange = (newPage: number) => {
@@ -65,7 +72,7 @@ const Blog: React.FC<Props> = ({ feed, pageCount, page }) => {
       <div className="page">
         <h1>Public Feed</h1>
         <main>
-          {feed.map((post) => (
+          {enrichedFeed.map((post) => (
             <div key={post.id} className="post">
               <Post post={post} />
             </div>

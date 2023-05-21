@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Layout from "../components/Layout";
+import Upload from "../components/Upload";
 import Router from "next/router";
 import { useSession } from "next-auth/react";
 
@@ -7,16 +8,32 @@ const Draft: React.FC = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const { data: session, status } = useSession();  
+
+  const [formData, setFormData] = useState(new FormData());
+  const handleUpload = (videoFormData : FormData) => setFormData(videoFormData);
+
+  const uploadVideo = async (formData : FormData, postId : string) =>{
+    formData.append('postId', postId);
+    await fetch('/api/upload', {
+      method: 'POST',
+      body: formData,
+    }); 
+  }
+
   let email = session?.user?.email;
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     try {
       const body = { title, content, session, email };
-      await fetch(`/api/post`, {
+      const response = await fetch(`/api/post`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
+      const data = await response.json();
+
+      uploadVideo(formData,data.id);
+
       await Router.push("/drafts");
     } catch (error) {
       console.error(error);
@@ -42,6 +59,8 @@ const Draft: React.FC = () => {
             rows={8}
             value={content}
           />
+          
+          <Upload onUpload={handleUpload} />
           <input disabled={!content || !title} type="submit" value="Create" />
           <a className="back" href="#" onClick={() => Router.push("/")}>
             or Cancel

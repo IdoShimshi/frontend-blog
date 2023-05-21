@@ -6,6 +6,8 @@ import Router from "next/router";
 import { PostProps } from "../../components/Post";
 import prisma from '../../lib/prisma'
 import { useSession } from "next-auth/react";
+import { getPublicIds } from "../../mongoDB/videoCollection";
+import Video from "../../components/Video";
 
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
@@ -19,6 +21,18 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
       },
     },
   });
+  if (post){
+    const postIdToPublicId = await getPublicIds([post].map((post) => post.id));
+    const enrichedpost = [post].map((post) =>({
+    ...post,
+    videoPublicId: postIdToPublicId[post.id],
+    }))[0];
+    return {
+      props: enrichedpost ?? { author: { name: "Me" } }
+    }
+  }
+  
+
   return {
     props: post ?? { author: { name: "Me" } }
   };
@@ -56,6 +70,7 @@ const Post: React.FC<PostProps> = (props) => {
         <h2>{title}</h2>
         <p>By {props?.author?.name || "Unknown author"}</p>
         <ReactMarkdown children={props.content} />
+        <div><Video publicId={props.videoPublicId} /></div>
         {!props.published && userHasValidSession && postBelongsToUser && (
           <button onClick={() => publishPost(props.id)}>Publish</button>
         )}
