@@ -58,6 +58,7 @@ const Draft: React.FC = () => {
             placeholder="Content"
             rows={8}
             value={content}
+            autoFocus
           />
           
           <Upload onUpload={handleUpload} />
