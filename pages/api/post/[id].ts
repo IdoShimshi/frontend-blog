@@ -1,7 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/react';
 import prisma from '../../../lib/prisma'
-
+import { deletePostMetadata } from '../../../mongoDB/videoCollection';
+import { v2 as cloudinary } from 'cloudinary';
 
 // DELETE /api/post/:id
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
@@ -15,6 +16,15 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
         where: { id: Number(postId) },
       });
       res.json(post);
+      
+      const publicId = await deletePostMetadata(Number(postId));
+      if (publicId){
+        try {
+          const deletionResponse = await cloudinary.uploader.destroy(publicId, {resource_type: 'video'});
+        } catch (error) {
+          console.error('Error deleting file:', error);
+        }
+      }
     } else {
       res.status(401).send({ message: 'Unauthorized' })
     }

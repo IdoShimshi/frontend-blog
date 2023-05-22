@@ -23,7 +23,7 @@ const Post: React.FC<{ post: PostProps }> = ({ post }) => {
       <h2>{post.title}</h2>
       <small>By {authorName}</small>
       <ReactMarkdown children={post.content} />
-      <div><Video publicId={post.videoPublicId} /></div>
+      <Video publicId={post.videoPublicId} />
       <style jsx>{`
         div {
           color: inherit;

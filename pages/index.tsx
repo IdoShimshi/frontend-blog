@@ -43,7 +43,6 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     ...post,
     videoPublicId: postIdToPublicId[post.id],
   }));
-  console.log(enrichedFeed[0]);
 
   return {
     props: { enrichedFeed, pageCount, page },

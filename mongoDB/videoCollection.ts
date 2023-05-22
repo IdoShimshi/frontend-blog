@@ -8,25 +8,21 @@ const videoSchema = new mongoose.Schema({
     });
 const Video = mongoose.models.Video || mongoose.model('Video', videoSchema)
 
+mongoose.set('strictQuery', false);
+mongoose.connect(uri);
+
 export const addVideoMetadata = async (postId: Number, public_id: string) =>{
-    mongoose.set('strictQuery',false);
-    await mongoose.connect(uri);
 
     const video = new Video({
     postId: postId,
     videoPublicId: public_id
     })
-    console.log(video);
-    video.save().then((result: any) => {
-    console.log ("saved");
-    mongoose.connection.close()
-    })
+    await video.save();
+    // .then((result: any) => {
+    // })
 }
 
 export const getPublicIds = async (postIds: number[]): Promise<{ [key: number]: string }> => {
-    mongoose.set('strictQuery', false);
-    await mongoose.connect(uri);
-  
     const result: { [key: number]: string } = {};
   
     try {
@@ -46,7 +42,22 @@ export const getPublicIds = async (postIds: number[]): Promise<{ [key: number]: 
       console.error('Error retrieving publicIds:', error);
     }
   
-    mongoose.connection.close();
     return result;
   };
   
+
+export const deletePostMetadata = async (postId: number): Promise<string | null> => {
+  try {
+    const deletedVideo = await Video.findOneAndRemove({ postId: postId }).exec();
+
+    if (deletedVideo) {
+      return deletedVideo.videoPublicId;
+    } else {
+      console.log('Video metadata not found for deletion.');
+      return null;
+    }
+  } catch (error) {
+    console.error('Error deleting video metadata:', error);
+    return null;
+  }
+};
