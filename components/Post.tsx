@@ -20,7 +20,10 @@ const Post: React.FC<{ post: PostProps }> = ({ post }) => {
   const authorName = post.author ? post.author.name : "Unknown author";
   return (
     <div onClick={() => Router.push("/p/[id]", `/p/${post.id}`)}>
-      <h2>{post.title}</h2>
+      <h2 style={{ display: 'flex', alignItems: 'center' }}>
+        {post.title}
+        {post.videoPublicId && <img src="./video.png" alt="logo" style={{height: '30px', width: '30px', marginLeft: 'auto'}}/>}
+      </h2>
       <small>By {authorName}</small>
       <ReactMarkdown children={post.content} />
       <Video publicId={post.videoPublicId} />
