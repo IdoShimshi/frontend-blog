@@ -1,7 +1,4 @@
 import { useState } from "react";
-import Video from "../components/Video";
-
-
 
 interface UploadProps {
     onUpload: (formData: FormData) => void;
@@ -36,8 +33,10 @@ const Upload: React.FC<UploadProps> = ({onUpload}) => {
     else{
         uploader =
         <div>
-          <span className="mt-2 text-base text-black leading-normal">
-            Selected  video: {videoName}
+          <span className="mt-2 text-base text-black leading-normal" style={{ display: 'flex', alignItems: 'center' }}>
+            Selected  video: {videoName}  
+            <img src="./red-x.png" alt="remove video" style={{height: '20px', width: '20px', marginLeft: '10px'}} 
+            onClick={()=>setvideoName("")}/>
             {/* <div><Video publicId={publicId} /></div> */}
           </span>
         </div>

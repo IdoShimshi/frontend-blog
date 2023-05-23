@@ -12,8 +12,9 @@ const Draft: React.FC = () => {
   const [formData, setFormData] = useState(new FormData());
   const handleUpload = (videoFormData : FormData) => setFormData(videoFormData);
 
-  const uploadVideo = async (formData : FormData, postId : string) =>{
+  const uploadVideo = async (formData : FormData, postId : string, authorId: string) =>{
     formData.append('postId', postId);
+    formData.append('authorId', authorId);
     await fetch('/api/upload', {
       method: 'POST',
       body: formData,
@@ -32,7 +33,7 @@ const Draft: React.FC = () => {
       });
       const data = await response.json();
 
-      uploadVideo(formData,data.id);
+      uploadVideo(formData,data.id, data.authorId);
 
       await Router.push("/drafts");
     } catch (error) {

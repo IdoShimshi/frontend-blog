@@ -19,6 +19,7 @@ const Video: React.FC<{ publicId: string }> = ({ publicId }) => {
       controls
       muted
       src={`https://res.cloudinary.com/frontend-blog/video/upload/vc_auto,q_auto,w_800/${publicId}`}
+      style={{ width: "400px", height: "300px" }}
     ></video>
   );
 };

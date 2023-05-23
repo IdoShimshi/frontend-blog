@@ -29,6 +29,8 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
   const file = Array.isArray(files) ? files[0]?.filepath : files?.filepath;
   const postIds = data?.fields?.postId; 
   const postId = Array.isArray(postIds) ? postIds[0] : postIds;
+  const authorIds = data?.fields?.authorId; 
+  const authorId = Array.isArray(authorIds) ? authorIds[0] : authorIds;
 
   if (file && postId){
     const response: UploadApiResponse = await cloudinary.uploader.upload(file, {
@@ -36,7 +38,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
         public_id: postId,
       });
     
-    addVideoMetadata(Number(postId), response.public_id);
+    addVideoMetadata(Number(postId), response.public_id, Number(authorId));
     res.json(response);
   }
 };

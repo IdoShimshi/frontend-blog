@@ -1,23 +1,30 @@
 import mongoose from 'mongoose';
 
-const uri = "mongodb+srv://idoShimshi:Ishimshi1@cluster0.t9ihacb.mongodb.net/Blog?retryWrites=true&w=majority";
+const uri = "mongodb+srv://idoShimshi:Ishimshi1@cluster0.t9ihacb.mongodb.net/VideoMetadata?retryWrites=true&w=majority";
 
 const videoSchema = new mongoose.Schema({
     postId: Number,
     videoPublicId: String,
+    authorId: Number,
+    uploadTime: Date
     });
 const Video = mongoose.models.Video || mongoose.model('Video', videoSchema)
 
 mongoose.set('strictQuery', false);
 mongoose.connect(uri);
 
-export const addVideoMetadata = async (postId: Number, public_id: string) =>{
+export const addVideoMetadata = async (postId: Number, public_id: string, authorId: Number) =>{
 
+  const currentTime = new Date();
     const video = new Video({
     postId: postId,
-    videoPublicId: public_id
+    videoPublicId: public_id,
+    authorId: authorId,
+    uploadTime: currentTime
     })
+
     await video.save();
+
     // .then((result: any) => {
     // })
 }
