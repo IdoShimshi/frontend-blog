@@ -31,7 +31,7 @@ const Draft: React.FC = () => {
         body: JSON.stringify(body),
       });
       const data = await response.json();
-
+      // we should add a flag field for attached video in order to find if a spinner should be loading
       uploadVideo(formData,data.id);
 
       await Router.push("/drafts");
