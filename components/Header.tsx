@@ -10,6 +10,11 @@ const Header: React.FC = () => {
 
   const {data: session, status} = useSession();
 
+
+  const signOutAndPopAlert = () => {
+    signOut()
+    alert("Logged Out!")
+  }
   let left = (
     <div className="left">
       <Link href="/" legacyBehavior>
@@ -155,7 +160,7 @@ const Header: React.FC = () => {
             <a>New post</a>
           </button>
         </Link>
-        <button onClick={() => signOut()}>
+        <button onClick={() => signOutAndPopAlert()}>
           <a>Log out</a>
         </button>
         <style jsx>{`

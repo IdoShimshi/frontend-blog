@@ -8,6 +8,7 @@ import prisma from '../../lib/prisma'
 import { useSession } from "next-auth/react";
 import { getPublicIds } from "../../mongoDB/videoCollection";
 import Video from "../../components/Video";
+import Spinner from "../../components/Spinner";
 
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
@@ -70,7 +71,10 @@ const Post: React.FC<PostProps> = (props) => {
         <h2>{title}</h2>
         <p>By {props?.author?.name || "Unknown author"}</p>
         <ReactMarkdown children={props.content} />
-        <div><Video publicId={props.videoPublicId} /></div>
+        <div>
+          {/* add another condition- if a video is attached at all (currently even if there is no video attached there is a spinner) */}
+          {props?.videoPublicId == '' ? <Spinner/> : <Video publicId={props.videoPublicId} />} 
+        </div>
         {!props.published && userHasValidSession && postBelongsToUser && (
           <button onClick={() => publishPost(props.id)}>Publish</button>
         )}
