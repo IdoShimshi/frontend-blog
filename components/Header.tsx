@@ -158,6 +158,17 @@ const Header: React.FC = () => {
         <button onClick={() => signOut()}>
           <a>Log out</a>
         </button>
+        {/* we should add conditional rendering here- case 1=log in and sign up, case2=log out and new post */}
+        <Link href="/login" legacyBehavior>
+          <button>
+            <a>Log in</a>
+          </button>
+        </Link>
+        <Link href="/signup" legacyBehavior>
+          <button>
+            <a>Sign up</a>
+          </button>
+        </Link>
         <style jsx>{`
           a {
             text-decoration: none;

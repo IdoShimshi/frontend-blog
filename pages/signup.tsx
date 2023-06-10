@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Layout from "../components/Layout";
 
 const SignupPage: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -37,48 +38,54 @@ const SignupPage: React.FC = () => {
   };
 
   return (
-    <div>
-      <h1>Sign Up Page</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="username">Username:</label>
-          <input
-            type="text"
-            id="username"
-            value={username}
-            onChange={handleUsernameChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={handlePasswordChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={handleEmailChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="name">Name:</label>
-          <input
-            type="text"
-            id="name"
-            value={name}
-            onChange={handleNameChange}
-          />
-        </div>
-        <button type="submit">Sign Up</button>
-      </form>
-    </div>
+    <Layout>
+      <div>
+        <h1>Sign Up Page</h1>
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column' }}>
+          <div style={{ display: 'flex', marginBottom: '1rem', width: '25%' }}>
+            <label htmlFor="username" style={{ marginRight: '0.5rem', width: '80px' }}>Username:</label>
+            <input
+              type="text"
+              id="username"
+              value={username}
+              onChange={handleUsernameChange}
+              style={{ flex: 1 }}
+            />
+          </div>
+          <div style={{ display: 'flex', marginBottom: '1rem', width: '25%'  }}>
+            <label htmlFor="password" style={{ marginRight: '0.5rem', width: '80px' }}>Password:</label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={handlePasswordChange}
+              style={{ flex: 1 }}
+            />
+          </div>
+          <div style={{ display: 'flex', marginBottom: '1rem', width: '25%'  }}>
+            <label htmlFor="email" style={{ marginRight: '0.5rem', width: '80px' }}>Email:</label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={handleEmailChange}
+              style={{ flex: 1 }}
+            />
+          </div>
+          <div style={{ display: 'flex', marginBottom: '1rem', width: '25%'  }}>
+            <label htmlFor="name" style={{ marginRight: '0.5rem', width: '80px' }}>Name:</label>
+            <input
+              type="text"
+              id="name"
+              value={name}
+              onChange={handleNameChange}
+              style={{ flex: 1 }}
+            />
+          </div>
+          <button type="submit" style={{ padding: '0.5rem 1rem', width: '25%'  }}>Sign Up</button>
+        </form>
+      </div>
+    </Layout>
   );
 };
 
