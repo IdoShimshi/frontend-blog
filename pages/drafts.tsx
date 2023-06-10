@@ -2,21 +2,25 @@ import React from "react";
 import { GetServerSideProps } from "next";
 import Layout from "../components/Layout";
 import Post, { PostProps } from "../components/Post";
-import { useSession, getSession } from "next-auth/react";
 import prisma from '../lib/prisma'
 import { getPublicIds } from "../mongoDB/videoCollection";
+import { loginDetailsProp } from "./_app";
 
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
-  const session = await getSession({ req });
-  if (!session) {
+  const loggedUserJSON = req.cookies.loginDetails
+  let loginDetails:loginDetailsProp;
+  if (!loggedUserJSON) {
     res.statusCode = 403;
     return { props: { drafts: [] } };
+  }else{
+    loginDetails = JSON.parse(loggedUserJSON);
   }
+
 
   const drafts = await prisma.post.findMany({
     where: {
-      author: { email: session.user?.email },
+      author: { email: loginDetails.email },
       published: false,
     },
     include: {
@@ -41,16 +45,6 @@ type Props = {
 };
 
 const Drafts: React.FC<Props> = (props) => {
-  const {data: session}= useSession();
-
-  if (!session) {
-    return (
-      <Layout>
-        <h1>My Drafts</h1>
-        <div>You need to be authenticated to view this page.</div>
-      </Layout>
-    );
-  }
 
   return (
     <Layout>
