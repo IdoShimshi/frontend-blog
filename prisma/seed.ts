@@ -1,4 +1,5 @@
 import { PrismaClient, Prisma } from '@prisma/client'
+import bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient()
 
@@ -6,35 +7,45 @@ const prisma = new PrismaClient()
 const userData: Prisma.UserCreateInput[] = [];
 let k:number = 1;
 
-for (let i = 0; i < 10000; i++) {
-  const name = `User${i}`;
-  const email = `user${i}@example.com`;
-  const posts = {
-    create: [] as Prisma.PostCreateWithoutAuthorInput[]
-  };
-
-
-  for (let j = 0; j < 100; j++) {
-    posts.create.push({
-      title: `Post ${k}`,
-      content: `example content ${j+1}`,
-      published: true,
-    });
-    k++;
-  }
+const makeuserdata = (async () => {
+  const userData: Prisma.UserCreateInput[] = [];
+  for (let i = 0; i < 100; i++) {
+    const name = `User${i}`;
+    const email = `user${i}@example.com`;
+    const password = `user${i}pass`
+    const passwordHash = await bcrypt.hash(password, 10);
   
-  userData.push({ name, email, posts });
-}
+    const posts = {
+      create: [] as Prisma.PostCreateWithoutAuthorInput[]
+    };
+  
+  
+    for (let j = 0; j < 10; j++) {
+      posts.create.push({
+        title: `Post ${k}`,
+        content: `example content ${j+1}`,
+        published: true,
+      });
+      k++;
+    }
+    
+    userData.push({ name, email, passwordHash, posts });
+  }
+  return userData;
+});
+
 
 async function main() {
+  const userdata = makeuserdata();
   console.log(`Start deleting previous records...`)
   await prisma.user.deleteMany({});
   console.log(`Finished deleting previous records.`)
   await prisma.post.deleteMany({});
   console.log(`Finished deleting previous posts.`)
-
+  const userData1: Prisma.UserCreateInput[] = await userdata;
+  console.log(userData1);
   console.log(`Start seeding ...`)
-  for (const u of userData) {
+  for (const u of userData1) {
     const user = await prisma.user.create({
       data: u,
     })
