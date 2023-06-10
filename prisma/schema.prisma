@@ -19,6 +19,7 @@ model Post {
 
 model User {
   id            Int       @id @default(autoincrement())
+  username      String?
   name          String?
   email         String?   @unique
   passwordHash   String?

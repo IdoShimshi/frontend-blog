@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import Router from "next/router";
+import Cookies from 'js-cookie';
+
 
 const LoginPage: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -16,8 +18,6 @@ const LoginPage: React.FC = () => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    console.log('Username:', username);
-    console.log('Password:', password);
     
     const response = await fetch('/api/auth/login', {
         method: 'POST',
@@ -29,14 +29,13 @@ const LoginPage: React.FC = () => {
     
     if (response.status === 200) {
         const data = await response.json();
-        const token = data.token;
-        console.log('Login successful! Token:', token, data.username, data.name);
         const loginDetails = {token: data.token,
                               username: data.username,
                               name: data.name,
-                              userId: data.id
+                              userId: data.id,
+                              email: data.email
         }
-        window.localStorage.setItem('loginDetails', JSON.stringify(loginDetails));
+        Cookies.set('loginDetails',JSON.stringify(loginDetails));
         await Router.push("/");
     }
     else {

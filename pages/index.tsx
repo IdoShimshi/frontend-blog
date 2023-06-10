@@ -5,6 +5,8 @@ import Post, { PostProps } from "../components/Post";
 import Pagination from "../components/Pagination";
 import prisma from '../lib/prisma'
 import {getPublicIds} from "../mongoDB/videoCollection"
+import { getLoginDetails } from "./_app";
+import Cookies from 'js-cookie';
 
 const PAGE_SIZE = 10;
 
@@ -59,18 +61,10 @@ const Blog: React.FC<Props> = ({ enrichedFeed, pageCount, page }) => {
   const [loggedIn, setloggedIn] = useState(false);
   const pages = [];
 
-  useEffect(() => {  
-    const loggedUserJSON = window.localStorage.getItem('loginDetails');
-    if (loggedUserJSON) {      
-      const userDetails = JSON.parse(loggedUserJSON);   
-      console.log("signed in:",userDetails.username, userDetails.userId, userDetails.name)
-      setloggedIn(true);
-    }
-    else{
-      console.log("not signed in")
-      setloggedIn(false);
-    }  
-  }, [])
+  const loginDetails = getLoginDetails();
+
+  if (loginDetails && !loggedIn)
+    setloggedIn(true)
 
   const handlePageChange = (newPage: number) => {
     // Prevent page change if already on the same page
@@ -82,7 +76,7 @@ const Blog: React.FC<Props> = ({ enrichedFeed, pageCount, page }) => {
 
   return (
     <div>
-      <div onClick={()=> window.localStorage.removeItem('loginDetails')}>{loggedIn? "loggedin": "notloggedin"}</div>
+      <div onClick={()=> Cookies.remove('loginDetails')}>{loggedIn? "loggedin": "notloggedin"}</div>
     <Layout>
       <div className="page">
         <h1>Public Feed</h1>

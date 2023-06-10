@@ -11,6 +11,7 @@ const makeuserdata = (async () => {
   const userData: Prisma.UserCreateInput[] = [];
   for (let i = 0; i < 100; i++) {
     const name = `User${i}`;
+    const username = `User${i}`;
     const email = `user${i}@example.com`;
     const password = `user${i}pass`
     const passwordHash = await bcrypt.hash(password, 10);
@@ -29,7 +30,7 @@ const makeuserdata = (async () => {
       k++;
     }
     
-    userData.push({ name, email, passwordHash, posts });
+    userData.push({ username, name, email, passwordHash, posts });
   }
   return userData;
 });
@@ -43,7 +44,6 @@ async function main() {
   await prisma.post.deleteMany({});
   console.log(`Finished deleting previous posts.`)
   const userData1: Prisma.UserCreateInput[] = await userdata;
-  console.log(userData1);
   console.log(`Start seeding ...`)
   for (const u of userData1) {
     const user = await prisma.user.create({
