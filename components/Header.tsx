@@ -86,13 +86,29 @@ const Header: React.FC = () => {
     right = (
       <div className="right">
         <Link href="/api/auth/signin" legacyBehavior>
-          <a data-active={isActive("/signup")}>Log in</a>
+          <a data-active={isActive("/signup")}>Auth Log in</a>
+        </Link>
+        <Link href="/login" legacyBehavior>
+          <button>
+            <a>Our Log in</a>
+          </button>
+        </Link>
+        <Link href="/signup" legacyBehavior>
+          <button>
+            <a>Sign up</a>
+          </button>
         </Link>
         <style jsx>{`
           a {
             text-decoration: none;
             color: #000;
             display: inline-block;
+          }
+
+          p {
+            display: inline-block;
+            font-size: 13px;
+            padding-right: 1rem;
           }
 
           a + a {
@@ -107,6 +123,10 @@ const Header: React.FC = () => {
             border: 1px solid black;
             padding: 0.5rem 1rem;
             border-radius: 3px;
+          }
+
+          button {
+            border: none;
           }
         `}</style>
       </div>
@@ -158,17 +178,6 @@ const Header: React.FC = () => {
         <button onClick={() => signOut()}>
           <a>Log out</a>
         </button>
-        {/* we should add conditional rendering here- case 1=log in and sign up, case2=log out and new post */}
-        <Link href="/login" legacyBehavior>
-          <button>
-            <a>Log in</a>
-          </button>
-        </Link>
-        <Link href="/signup" legacyBehavior>
-          <button>
-            <a>Sign up</a>
-          </button>
-        </Link>
         <style jsx>{`
           a {
             text-decoration: none;
