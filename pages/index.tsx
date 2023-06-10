@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState} from "react";
 import type { GetServerSideProps } from "next";
 import Layout from "../components/Layout";
 import Post, { PostProps } from "../components/Post";
@@ -56,7 +56,21 @@ type Props = {
 };
 
 const Blog: React.FC<Props> = ({ enrichedFeed, pageCount, page }) => {
+  const [loggedIn, setloggedIn] = useState(false);
   const pages = [];
+
+  useEffect(() => {  
+    const loggedUserJSON = window.localStorage.getItem('loginDetails');
+    if (loggedUserJSON) {      
+      const userDetails = JSON.parse(loggedUserJSON);   
+      console.log("signed in:",userDetails.username, userDetails.userId, userDetails.name)
+      setloggedIn(true);
+    }
+    else{
+      console.log("not signed in")
+      setloggedIn(false);
+    }  
+  }, [])
 
   const handlePageChange = (newPage: number) => {
     // Prevent page change if already on the same page
@@ -67,6 +81,8 @@ const Blog: React.FC<Props> = ({ enrichedFeed, pageCount, page }) => {
   };
 
   return (
+    <div>
+      <div onClick={()=> window.localStorage.removeItem('loginDetails')}>{loggedIn? "loggedin": "notloggedin"}</div>
     <Layout>
       <div className="page">
         <h1>Public Feed</h1>
@@ -122,6 +138,7 @@ const Blog: React.FC<Props> = ({ enrichedFeed, pageCount, page }) => {
         }
       `}</style>
     </Layout>
+    </div>
   );
 };
 
