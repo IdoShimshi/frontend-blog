@@ -20,7 +20,7 @@ const SignupPage: React.FC = () => {
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
-  const [signupFail, setSignupFail] = useState(false);
+  const [signupFailMessage, setSignupFailMessage] = useState('');
   const [errorFlag, setErrorFlag] = useState(false);
 
   const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -72,7 +72,8 @@ const SignupPage: React.FC = () => {
     };
     let error_flag = false;
     for (let some_field_errors in all_errors) {
-      if (some_field_errors.length > 0) {
+      if (all_errors[some_field_errors].length > 0) {
+        console.log(error_flag)
         error_flag = true;
         break;
       }
@@ -96,7 +97,7 @@ const SignupPage: React.FC = () => {
       setErrorFlag(true);
       return;
     }
-
+    
     const response = await fetch('/api/auth/signup', {
       method: 'POST',
       headers: {
@@ -104,7 +105,8 @@ const SignupPage: React.FC = () => {
       },
       body: JSON.stringify({ username, password, email, name }),
     });
-  
+
+    
     if (response.status === 200) {
       const data = await response.json();
       console.log('Sign up successful!');
@@ -113,11 +115,11 @@ const SignupPage: React.FC = () => {
       const errorData = await response.json();
       const errorMessage = errorData.error;
       console.log('Sign up failed. Error:', errorMessage);
-      setSignupFail(true);
-      // TODO: Handle sign up failure
+      setSignupFailMessage(errorMessage);
     }
 
     // Reset form fields
+    // do we want to reset at all? 200 status redirects to login page anyway
     setUsername('');
     setPassword('');
     setEmail('');
@@ -203,6 +205,10 @@ const SignupPage: React.FC = () => {
           </div>
           <button type="submit" style={{ padding: '0.5rem 1rem', width: '289px' }}>Sign Up</button>
         </form>
+        <div>
+          {/* maybe change to alert */}
+          {signupFailMessage}
+        </div>
       </div>
 
       <style jsx>{`
