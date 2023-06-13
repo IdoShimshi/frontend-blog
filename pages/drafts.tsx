@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { GetServerSideProps } from "next";
 import Layout from "../components/Layout";
 import Post, { PostProps } from "../components/Post";
 import prisma from '../lib/prisma'
 import { getPublicIds } from "../mongoDB/videoCollection";
-import { loginDetailsProp } from "./_app";
+import { getLoginDetails, loginDetailsProp } from "./_app";
 
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
@@ -45,6 +45,21 @@ type Props = {
 };
 
 const Drafts: React.FC<Props> = (props) => {
+  const [loginDetails, setLoginDetails] = useState<loginDetailsProp | null>(null);
+  useEffect(() => {
+    const loginDetails = getLoginDetails();
+    if (loginDetails)
+    setLoginDetails(loginDetails);
+  }, []);
+
+  if (!loginDetails) {
+    return (
+      <Layout>
+        <h1>My Drafts</h1>
+        <div>You need to be logged in to view this page.</div>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>

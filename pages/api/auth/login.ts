@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import prisma from '../../../lib/prisma'
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import {SignJWT} from 'jose';
 
 // POST /api/post
 // Required fields in body: title
@@ -12,7 +12,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 
 
   if (req.method === 'POST'){
-    let token = null;
+    let token: string = '';
     const { username, password } = req.body;
     const result = await prisma.user.findFirst({
       where:{
@@ -29,8 +29,12 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
             name: result.name,
             id: result.id,
           }
-          if (process.env.SECRET)
-            token = jwt.sign(userForToken,process.env.SECRET);
+          if (process.env.SECRET){
+            token = await new SignJWT({...userForToken})
+            .setProtectedHeader({alg: 'HS256', typ: 'JWT'})
+            .sign(new TextEncoder().encode(process.env.SECRET));
+          }
+            
           else 
             console.log("secret not set");
         res.status(200).send({...userForToken, token: token})

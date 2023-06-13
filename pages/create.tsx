@@ -1,13 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import Upload from "../components/Upload";
 import Router from "next/router";
-import { getLoginDetails } from "./_app";
+import { getLoginDetails, loginDetailsProp } from "./_app";
 
 const Draft: React.FC = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const loginDetails = getLoginDetails();
+  const [loginDetails, setLoginDetails] = useState<loginDetailsProp | null>(null);
+  useEffect(() => {
+    const loginDetails = getLoginDetails();
+    if (loginDetails)
+    setLoginDetails(loginDetails);
+  }, []);
 
   const [formData, setFormData] = useState(new FormData());
   const handleUpload = (videoFormData : FormData) => setFormData(videoFormData);
