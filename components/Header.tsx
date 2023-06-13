@@ -10,7 +10,6 @@ const Header: React.FC = () => {
   const isActive: (pathname: string) => boolean = (pathname) =>
     router.pathname === pathname;
 
-  // const {data: session, status} = useSession();
   useEffect(() => {
     const loginDetails = getLoginDetails();
     if (loginDetails)

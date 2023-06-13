@@ -1,4 +1,3 @@
-import { SessionProvider } from "next-auth/react";
 import { AppProps } from "next/app";
 import { useState, useEffect } from "react";
 import Cookies from 'js-cookie';
@@ -37,9 +36,7 @@ const App = ({ Component, pageProps }: AppProps) => {
   }, [])
 
   return (
-    <SessionProvider session={pageProps.session}>
       <Component {...{...pageProps, loginDetails: loginDetails}} />
-    </SessionProvider>
   );
 };
 
