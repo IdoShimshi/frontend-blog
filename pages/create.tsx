@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import Layout from "../components/Layout";
 import Upload from "../components/Upload";
 import Router from "next/router";
-import { useSession } from "next-auth/react";
+import { getLoginDetails } from "./_app";
 
 const Draft: React.FC = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const { data: session, status } = useSession();  
+  const loginDetails = getLoginDetails();
 
   const [formData, setFormData] = useState(new FormData());
   const handleUpload = (videoFormData : FormData) => setFormData(videoFormData);
@@ -20,11 +20,10 @@ const Draft: React.FC = () => {
     }); 
   }
 
-  let email = session?.user?.email;
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     try {
-      const body = { title, content, session, email };
+      const body = { title, content, loginDetails };
       const response = await fetch(`/api/post`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

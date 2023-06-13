@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { getSession } from 'next-auth/react';
 import prisma from '../../../lib/prisma'
 import { deletePostMetadata } from '../../../mongoDB/videoCollection';
 import { v2 as cloudinary } from 'cloudinary';
@@ -8,10 +7,10 @@ import { v2 as cloudinary } from 'cloudinary';
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
   const postId = req.query.id;
 
-  const session = await getSession({ req })
+  const loggedUserJSON = req.cookies.loginDetails
 
   if (req.method === "DELETE") {
-    if (session) {
+    if (loggedUserJSON) {
       const post = await prisma.post.delete({
         where: { id: Number(postId) },
       });
