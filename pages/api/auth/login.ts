@@ -7,8 +7,6 @@ import {SignJWT} from 'jose';
 // Required fields in body: title
 // Optional fields in body: content
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
-    const testuser = {name: 'testman', username: 'test', password: 'testhash123', _id:123};
-    const passwordHash = await bcrypt.hash(testuser.password, 10);
 
 
   if (req.method === 'POST'){
@@ -20,7 +18,6 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
       }
     })
     
-
 
     if (result && result.passwordHash && await bcrypt.compare(password, result.passwordHash)){
         const userForToken = {
@@ -37,12 +34,16 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
             
           else 
             console.log("secret not set");
-        res.status(200).send({...userForToken, token: token})
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify({...userForToken, token: token}));
+        // res.status(200).send({...userForToken, token: token})
     }
     else{
-        return res.status(401).json({
-            error: 'invalid username or password'
-          })
+      res.statusCode = 401;
+      res.end(JSON.stringify({
+        error: 'invalid username or password'
+      }));
     }
 
   }
