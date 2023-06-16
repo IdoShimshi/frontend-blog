@@ -4,17 +4,19 @@ import Router from "next/router";
 
 const SignupPage: React.FC = () => {
   const errors_dict = {
-    "username_errors": 
-      {"empty_username": "Username must not remain empty"},
-    "password_errors": 
-      {"empty_password": "Password must not remain empty"},
+    "username_errors":
+      { "empty_username": "Username must not remain empty" },
+    "password_errors":
+      { "empty_password": "Password must not remain empty" },
     "email_errors":
-      {"empty_email": "Email must not remain empty",
-       "invalid_mail_format": "Invalid mail format"},
+    {
+      "empty_email": "Email must not remain empty",
+      "invalid_mail_format": "Invalid mail format"
+    },
     "name_errors":
-      {"empty_name": "Name must not remain empty"}
+      { "empty_name": "Name must not remain empty" }
   };
-  
+
   const [errors, setErrors] = useState({});
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -97,7 +99,7 @@ const SignupPage: React.FC = () => {
       setErrorFlag(true);
       return;
     }
-    
+
     const response = await fetch('/api/auth/signup', {
       method: 'POST',
       headers: {
@@ -106,7 +108,7 @@ const SignupPage: React.FC = () => {
       body: JSON.stringify({ username, password, email, name }),
     });
 
-    
+
     if (response.status === 200) {
       const data = await response.json();
       console.log('Sign up successful!');
@@ -168,7 +170,7 @@ const SignupPage: React.FC = () => {
             )}
           </div>
           <div style={{ display: 'flex', marginBottom: '1rem' }}>
-            <label htmlFor="email" style={{ marginRight: '0.5rem', width: '80px'}}>Email:</label>
+            <label htmlFor="email" style={{ marginRight: '0.5rem', width: '80px' }}>Email:</label>
             <input
               type="email"
               id="email"
