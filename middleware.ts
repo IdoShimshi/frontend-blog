@@ -6,7 +6,7 @@ import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 
 import { jwtVerify} from 'jose';
 
-const onlyLoggedInURLs = ['drafts', 'create', 'api/post', 'api/publish', 'api/upload']
+const onlyLoggedInURLs = ['drafts', 'create', 'api/post', 'api/publish', 'api/upload', 'profile']
 const checkToken = async (request: NextRequest) => {
   const loginCookie = request.cookies.get('loginDetails')
   if (!loginCookie)
