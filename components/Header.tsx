@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { getLoginDetails, loginDetailsProp } from "../pages/_app";
 import Cookies from "js-cookie";
+import Router from "next/router";
 
 const Header: React.FC = () => {
   const [loginDetails, setLoginDetails] = useState<loginDetailsProp | null>(null);
@@ -16,9 +17,10 @@ const Header: React.FC = () => {
     setLoginDetails(loginDetails);
   }, []);
 
-  const handleLogOut = () => {
+  const handleLogOut = async () => {
     Cookies.remove('loginDetails');
     setLoginDetails(null);
+    await Router.push("/");
   }
 
   let left = (
@@ -56,12 +58,9 @@ const Header: React.FC = () => {
   if (!loginDetails) {
     right = (
       <div className="right">
-        <Link href="/api/auth/signin" legacyBehavior>
-          <a data-active={isActive("/signup")}>Auth Log in</a>
-        </Link>
         <Link href="/login" legacyBehavior>
           <button>
-            <a>Our Log in</a>
+            <a>Log in</a>
           </button>
         </Link>
         <Link href="/signup" legacyBehavior>
@@ -115,6 +114,10 @@ const Header: React.FC = () => {
         <Link href="/drafts" legacyBehavior>
           <a data-active={isActive("/drafts")}>My drafts</a>
         </Link>
+        <Link href="/profile" legacyBehavior>
+          <a data-active={isActive("/profile")}>My profile</a>
+        </Link>
+        
         <style jsx>{`
           .bold {
             font-weight: bold;
