@@ -14,7 +14,7 @@ const Draft: React.FC = () => {
     setLoginDetails(loginDetails);
   }, []);
 
-  const [formData, setFormData] = useState(new FormData());
+  const [formData, setFormData] = useState<FormData | null>(null);
   const handleUpload = (videoFormData : FormData) => setFormData(videoFormData);
 
   const uploadVideo = async (formData : FormData, postId : string) =>{
@@ -35,8 +35,9 @@ const Draft: React.FC = () => {
         body: JSON.stringify(body),
       });
       const data = await response.json();
-
-      uploadVideo(formData,data.id);
+      if(formData){
+        uploadVideo(formData,data.id);
+      }
 
       await Router.push("/drafts");
     } catch (error) {
