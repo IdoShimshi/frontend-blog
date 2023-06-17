@@ -34,7 +34,8 @@ const LoginPage: React.FC = () => {
                               username: data.username,
                               name: data.name,
                               userId: data.id,
-                              email: data.email
+                              email: data.email,
+                              image: data.image
         }
         Cookies.set('loginDetails',JSON.stringify(loginDetails));
         await Router.push("/");

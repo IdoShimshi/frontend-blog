@@ -29,14 +29,18 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
   // }
 
   const loggedUserJSON = req.cookies.loginDetails
-    const { email, name } = req.body;
+    const { email, name, hasFormData } = req.body;
+    const imageValue = hasFormData ? "1" : null
+    console.log("formData")
+    console.log(hasFormData)
   if (loggedUserJSON) {
     const user = await prisma.user.update({
       where:{
                 email: email
               },
               data: {
-                  name: name
+                  name: name,
+                  image: imageValue
               }
     });
     res.json(user);

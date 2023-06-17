@@ -29,6 +29,26 @@ const ProfilePage: React.FC = (props) => {
         }); 
       }
 
+    const deleteImage = async (event: React.FormEvent) =>{
+        event.preventDefault();
+        const requestBody = {
+            email: loginDetails?.email,
+            name: loginDetails?.name,
+            hasFormData: null
+          };
+        const response = await fetch('/api/auth/editprofile', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(requestBody)
+          });
+          if(response){
+            Cookies.set('loginDetails',JSON.stringify({...loginDetails, image: null}));
+            window.location.href = `/profile`;
+          }
+    }
+
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
         if(name==''){
@@ -40,20 +60,27 @@ const ProfilePage: React.FC = (props) => {
             return;
         }
         const email = loginDetails.email
+        const requestBody = {
+            email: email,
+            name: name,
+            hasFormData: Boolean(formData)
+          };
         const response = await fetch('/api/auth/editprofile', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ email, name }),
+            body: JSON.stringify(requestBody)
           });
           if (response.status === 200) {
             const data = await response.json();
             if(formData){
                 uploadImage(event, formData,data.id);
+                Cookies.set('loginDetails',JSON.stringify({...loginDetails, name: name, image: "1"}));
               }
-            console.log('Edit profile successful!');
-            Cookies.set('loginDetails',JSON.stringify({...loginDetails, name: name}));
+            else{
+                Cookies.set('loginDetails',JSON.stringify({...loginDetails, name: name}));
+            }
             window.location.href = `/profile`;
           } else {
             const errorData = await response.json();
@@ -110,11 +137,16 @@ const ProfilePage: React.FC = (props) => {
                     />
                     </div>
                     <div style={{ display: 'flex', marginBottom: '1rem' }}>
-                        <label htmlFor="name" style={{ marginRight: '0.5rem', width: '80px' }}>Image:</label>
-                        <div>
-                            <Image publicId={String(loginDetails.userId)} />
-                        </div>
-                        <UploadImage onUploadImage={handleUploadImage} />
+                        <label htmlFor="name" style={{ marginRight: '0.5rem', width: '80px'}}>Image:</label>
+                        {loginDetails?.image && <div style={{ display: 'flex' }}>
+                            <div style={{width: '30px', height: '30px'}}>
+                                <Image publicId={String(loginDetails.userId)}/>
+                            </div>
+                            <div style={{ marginLeft: '50px'}}>
+                                <button onClick={deleteImage}>Delete image</button>
+                            </div>
+                        </div>}
+                        {!loginDetails?.image && <UploadImage onUploadImage={handleUploadImage} />}
                         
                     </div>
                     <button type="submit" style={{ padding: '0.5rem 1rem', width: '289px' }}>Save</button>

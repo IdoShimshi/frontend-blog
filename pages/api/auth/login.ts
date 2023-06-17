@@ -25,6 +25,7 @@ export default async function handleLogin(req: NextApiRequest, res: NextApiRespo
             username: result.username,
             name: result.name,
             id: result.id,
+            image: result.image
           }
           if (process.env.SECRET){
             token = await new SignJWT({...userForToken})

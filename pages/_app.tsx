@@ -7,14 +7,15 @@ export type loginDetailsProp = {
   email?: string,
   username?: string,
   name?: string,
-  userId?: Number
+  userId?: Number,
+  image?: string
 }
 
 export const getLoginDetails = () => {
   let loginDetails: loginDetailsProp | undefined;
   const loggedUserJSON = Cookies.get("loginDetails");
   if (loggedUserJSON) {      
-    loginDetails = JSON.parse(loggedUserJSON);   
+    loginDetails = JSON.parse(loggedUserJSON);
   }
   return loginDetails;
 }

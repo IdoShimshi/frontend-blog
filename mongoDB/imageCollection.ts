@@ -17,7 +17,6 @@ export const addImageMetadata = async (userId, publicId) => {
     userId,
     imagePublicId: publicId,
   });
-  console.log(image)
 
   try {
     const savedImage = await image.save();
