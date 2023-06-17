@@ -15,7 +15,6 @@ export default async function handleSignup(req: NextApiRequest, res: NextApiResp
       })
 
       if(user_by_username){
-        console.log("user_by_username_error")
         return res.status(403).json({
             error: "User with this username already exists"
         })
@@ -27,7 +26,6 @@ export default async function handleSignup(req: NextApiRequest, res: NextApiResp
       })
 
       if(user_by_email){
-        console.log("user_by_email_error")
         return res.status(403).json({
             error: "User with this email already exists"
         })
@@ -42,7 +40,6 @@ export default async function handleSignup(req: NextApiRequest, res: NextApiResp
           name: name,
         },
       });
-      console.log(result)
       if (result && result.passwordHash && await bcrypt.compare(password, result.passwordHash)){
         res.status(200).send({})
       }

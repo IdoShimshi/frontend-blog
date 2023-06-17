@@ -9,12 +9,12 @@ import Image from "../components/Image";
 
 const ProfilePage: React.FC = (props) => {
 
-    const [loginDetails, setLoginDetails] = useState<loginDetailsProp | null>(null);
     const [editName, setEditName] = useState(false)
-    const [name, setName] = useState();
     const [formData, setFormData] = useState<FormData | null>(null);
 
     const handleUploadImage = (imageFormData : FormData) => setFormData(imageFormData);
+    const [name, setName] = useState('');
+    const [loginDetails, setLoginDetails] = useState<loginDetailsProp | null>(null);
 
     const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setName(event.target.value);
@@ -33,7 +33,11 @@ const ProfilePage: React.FC = (props) => {
         event.preventDefault();
         if(name==''){
             console.log("name cannot be empty!")
-            return
+            return;
+        }
+        if (!loginDetails){
+            console.log("not logged in!")
+            return;
         }
         const email = loginDetails.email
         const response = await fetch('/api/auth/editprofile', {
@@ -62,12 +66,13 @@ const ProfilePage: React.FC = (props) => {
         const loginDetails = getLoginDetails();
         if (loginDetails){
             setLoginDetails(loginDetails);
-            setName(loginDetails.name)
+            if(loginDetails.name)
+                setName(loginDetails.name)
         }
       }, []);
 
     if(!loginDetails){
-        return;
+        return <div></div>;
     }
     return(
         <Layout>
