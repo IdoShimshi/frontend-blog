@@ -23,6 +23,8 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
         author: {
           select: {
             name: true,
+            image: true,
+            id: true
           },
         },
       },
