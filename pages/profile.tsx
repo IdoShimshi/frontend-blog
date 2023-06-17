@@ -5,16 +5,22 @@ import Router from "next/router";
 
 const ProfilePage: React.FC = () => {
 
-    const [loginDetails, setLoginDetails] = useState<loginDetailsProp | null>(null);
     const [editName, setEditName] = useState(false)
-    const [name, setName] = useState();
+    const [name, setName] = useState('');
+    const [loginDetails, setLoginDetails] = useState<loginDetailsProp | null>(null);
+
     const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setName(event.target.value);
     }
     const handleSubmit = async (event: React.FormEvent) => {
+        event.preventDefault();
         if(name==''){
             console.log("name cannot be empty!")
-            return
+            return;
+        }
+        if (!loginDetails){
+            console.log("not logged in!")
+            return;
         }
         const username = loginDetails?.username
         const email = loginDetails.email
@@ -40,18 +46,20 @@ const ProfilePage: React.FC = () => {
     }
     useEffect(() => {
         const loginDetails = getLoginDetails();
-        if (loginDetails)
-        setLoginDetails(loginDetails);
-        setName(loginDetails.name)
+        if (loginDetails){
+            setLoginDetails(loginDetails);
+            if(loginDetails.name)
+                setName(loginDetails.name)
+        }
       }, []);
 
     if(!loginDetails){
-        return;
+        return <div></div>;
     }
     return(
         <Layout>
             <div>
-                <h1>My Profile Page</h1>{console.log(loginDetails)}
+                <h1>My Profile Page</h1>
                 <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column' }}>
                     <div style={{ display: 'flex', marginBottom: '1rem' }}>
                         <label htmlFor="username" style={{ marginRight: '0.5rem', width: '80px' }}>Username:</label>

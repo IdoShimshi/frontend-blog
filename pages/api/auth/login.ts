@@ -6,7 +6,7 @@ import {SignJWT} from 'jose';
 // POST /api/post
 // Required fields in body: title
 // Optional fields in body: content
-export default async function handle(req: NextApiRequest, res: NextApiResponse) {
+export default async function handleLogin(req: NextApiRequest, res: NextApiResponse) {
 
 
   if (req.method === 'POST'){
