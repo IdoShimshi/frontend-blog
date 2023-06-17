@@ -29,7 +29,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
   // }
 
   const loggedUserJSON = req.cookies.loginDetails
-    const { username, email, name } = req.body;
+    const { email, name } = req.body;
   if (loggedUserJSON) {
     const user = await prisma.user.update({
       where:{
