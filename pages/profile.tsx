@@ -1,17 +1,34 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../components/Layout"
 import { getLoginDetails, loginDetailsProp } from "../pages/_app";
-import Router from "next/router";
+import Cookies from 'js-cookie';
+import UploadImage from "../components/UploadImage";
+import prisma from '../lib/prisma'
+import Image from "../components/Image";
 
-const ProfilePage: React.FC = () => {
+
+const ProfilePage: React.FC = (props) => {
 
     const [editName, setEditName] = useState(false)
+    const [formData, setFormData] = useState<FormData | null>(null);
+
+    const handleUploadImage = (imageFormData : FormData) => setFormData(imageFormData);
     const [name, setName] = useState('');
     const [loginDetails, setLoginDetails] = useState<loginDetailsProp | null>(null);
 
     const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setName(event.target.value);
     }
+
+    const uploadImage = async (event: React.FormEvent, formData : FormData, userId : string) =>{
+        event.preventDefault();
+        formData.append('userId', userId);
+        await fetch('/api/uploadimage', {
+          method: 'POST',
+          body: formData,
+        }); 
+      }
+
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
         if(name==''){
@@ -22,25 +39,26 @@ const ProfilePage: React.FC = () => {
             console.log("not logged in!")
             return;
         }
-        const username = loginDetails?.username
         const email = loginDetails.email
-        console.log(name)
         const response = await fetch('/api/auth/editprofile', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ username, email, name }),
+            body: JSON.stringify({ email, name }),
           });
-          console.log(response)
           if (response.status === 200) {
             const data = await response.json();
-            console.log('Sign up successful!');
-            // await Router.push("/")
+            if(formData){
+                uploadImage(event, formData,data.id);
+              }
+            console.log('Edit profile successful!');
+            Cookies.set('loginDetails',JSON.stringify({...loginDetails, name: name}));
+            window.location.href = `/profile`;
           } else {
             const errorData = await response.json();
             const errorMessage = errorData.error;
-            console.log('Sign up failed. Error:', errorMessage);
+            console.log('Edit profile failed. Error:', errorMessage);
             // setSignupFailMessage(errorMessage);
           }
     }
@@ -90,6 +108,14 @@ const ProfilePage: React.FC = () => {
                         onChange={handleNameChange}
                         style={{ flex: 1, maxWidth: '200px' }}
                     />
+                    </div>
+                    <div style={{ display: 'flex', marginBottom: '1rem' }}>
+                        <label htmlFor="name" style={{ marginRight: '0.5rem', width: '80px' }}>Image:</label>
+                        <div>
+                            <Image publicId={String(loginDetails.userId)} />
+                        </div>
+                        <UploadImage onUploadImage={handleUploadImage} />
+                        
                     </div>
                     <button type="submit" style={{ padding: '0.5rem 1rem', width: '289px' }}>Save</button>
                 </form>
