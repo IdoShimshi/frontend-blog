@@ -4,7 +4,7 @@ import { deletePostMetadata } from '../../../mongoDB/videoCollection';
 import { v2 as cloudinary } from 'cloudinary';
 
 // DELETE /api/post/:id
-export default async function handle(req: NextApiRequest, res: NextApiResponse) {
+export default async function handleDelete(req: NextApiRequest, res: NextApiResponse) {
   const postId = req.query.id;
 
   const loggedUserJSON = req.cookies.loginDetails
