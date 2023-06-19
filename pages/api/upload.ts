@@ -33,7 +33,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
   if (file && postId){
     const response: UploadApiResponse = await cloudinary.uploader.upload(file, {
         resource_type: 'video',
-        public_id: postId,
+        public_id: "video-"+postId,
       });
     
     addVideoMetadata(Number(postId), response.public_id);

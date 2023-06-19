@@ -16,7 +16,7 @@ export default async function handleDelete(req: NextApiRequest, res: NextApiResp
       console.log(publicId)
       if (publicId){
         try {
-          console.log("try")
+          console.log("try", publicId)
           const deletionResponse = await cloudinary.uploader.destroy(publicId, {resource_type: 'image'});
           res.json(deletionResponse);
         } catch (error) {

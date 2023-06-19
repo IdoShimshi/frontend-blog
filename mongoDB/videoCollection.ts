@@ -3,23 +3,23 @@ import mongoose from 'mongoose';
 const uri = "mongodb+srv://idoShimshi:Ishimshi1@cluster0.t9ihacb.mongodb.net/Blog?retryWrites=true&w=majority";
 
 const videoSchema = new mongoose.Schema({
-    postId: Number,
-    videoPublicId: String,
-    });
+  postId: Number,
+  videoPublicId: String,
+});
+
 const Video = mongoose.models.Video || mongoose.model('Video', videoSchema)
 
 mongoose.set('strictQuery', false);
 mongoose.connect(uri);
 
 export const addVideoMetadata = async (postId: Number, public_id: string) =>{
-
-    const video = new Video({
+  const video = new Video({
     postId: postId,
     videoPublicId: public_id
-    })
-    await video.save();
-    // .then((result: any) => {
-    // })
+  })
+  await video.save();
+  // .then((result: any) => {
+  // })
 }
 
 export const getPublicIds = async (postIds: number[]): Promise<{ [key: number]: string }> => {

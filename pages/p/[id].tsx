@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { GetServerSideProps } from "next";
 import ReactMarkdown from "react-markdown";
 import Layout from "../../components/Layout";
@@ -7,7 +7,8 @@ import { PostProps } from "../../components/Post";
 import prisma from '../../lib/prisma'
 import { getPublicIds } from "../../mongoDB/videoCollection";
 import Video from "../../components/Video";
-import { getLoginDetails } from "../_app";
+import { getLoginDetails, loginDetailsProp } from "../_app";
+import Image from "../../components/Image";
 
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
@@ -17,7 +18,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     },
     include: {
       author: {
-        select: { name: true, email: true },
+        select: { name: true, email: true, id: true, image: true },
       },
     },
   });
@@ -53,19 +54,26 @@ async function deletePost(id: number): Promise<void> {
 }
 
 const Post: React.FC<PostProps> = (props) => {
-  const loginDetails = getLoginDetails();
+  const [loginDetails, setLoginDetails] = useState<loginDetailsProp | null>(null);
+  useEffect(() => {
+    const loginDetails = getLoginDetails();
+    if (loginDetails)
+    setLoginDetails(loginDetails);
+  }, []);
+  
   const userLoggedIn = Boolean(loginDetails);
   const postBelongsToUser = loginDetails?.email === props.author?.email;
   let title = props.title;
+  console.log(props);
   if (!props.published) {
     title = `${title} (Draft)`;
   }
-
   return (
     <Layout>
       <div>
         <h2>{title}</h2>
         <p>By {props?.author?.name || "Unknown author"}</p>
+        {props.author?.image && <div style={{width: '100px', height: '100px'}}><Image publicId={String(props.author.id)}/></div>}
         <ReactMarkdown children={props.content} />
         <div><Video publicId={props.videoPublicId} /></div>
         {!props.published && userLoggedIn && postBelongsToUser && (

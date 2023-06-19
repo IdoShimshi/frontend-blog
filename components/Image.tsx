@@ -16,7 +16,7 @@ const Image: React.FC<{ publicId: string }> = ({ publicId }) => {
     <img
         style={{ width: '100%', height: '100%', objectFit: 'cover' }}
         className={`${publicId.length === 0 ? "hidden" : "block m-4"}`}
-        src={`https://res.cloudinary.com/frontend-blog/image/upload/vc_auto,q_auto,w_800/${publicId}`}
+        src={`https://res.cloudinary.com/frontend-blog/image/upload/vc_auto,q_auto,w_800/${"image-" + publicId}`}
     />
   );
 };

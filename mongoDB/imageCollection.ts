@@ -12,9 +12,9 @@ const Image = mongoose.models.Image || mongoose.model('Image', imageSchema);
 mongoose.set('strictQuery', false);
 mongoose.connect(uri);
 
-export const addImageMetadata = async (userId, publicId) => {
+export const addImageMetadata = async (userId: Number, publicId: string) => {
   const image = new Image({
-    userId,
+    userId: userId,
     imagePublicId: publicId,
   });
 
@@ -26,8 +26,8 @@ export const addImageMetadata = async (userId, publicId) => {
   }
 };
 
-export const getImagePublicIds = async (userIds) => {
-  const result = {};
+export const getImagePublicIds = async (userIds: number[]) => {
+  const result: { [key: number]: string } = {};
 
   try {
     const images = await Image.find({ userId: { $in: userIds } }).exec();
@@ -48,9 +48,9 @@ export const getImagePublicIds = async (userIds) => {
   return result;
 };
 
-export const deleteImageMetadata = async (userId) => {
+export const deleteImageMetadata = async (userId: number) => {
   try {
-    const deletedImage = await Image.findOneAndRemove({ userId }).exec();
+    const deletedImage = await Image.findOneAndRemove({ userId: userId }).exec();
 
     if (deletedImage) {
       console.log('Image metadata deleted:', deletedImage);

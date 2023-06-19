@@ -30,7 +30,7 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
   if (file && userId){
     const response: UploadApiResponse = await cloudinary.uploader.upload(file, {
         resource_type: 'image',
-        public_id: userId,
+        public_id: "image-" + userId,
       });
     addImageMetadata(Number(userId), response.public_id);
     res.json(response);
