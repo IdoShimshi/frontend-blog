@@ -22,7 +22,7 @@ const ProfilePage: React.FC = (props) => {
 
     const uploadImage = async (event: React.FormEvent, formData : FormData, userId : string) =>{
         event.preventDefault();
-        formData.append('userId', userId);
+        await formData.append('userId', userId);
         await fetch('/api/uploadimage', {
           method: 'POST',
           body: formData,
@@ -42,6 +42,10 @@ const ProfilePage: React.FC = (props) => {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify(requestBody)
+          });
+
+          const response_delete_image = await fetch(`/api/image/${loginDetails?.userId}`, {
+            method: "DELETE",
           });
           if(response){
             Cookies.set('loginDetails',JSON.stringify({...loginDetails, image: null}));
