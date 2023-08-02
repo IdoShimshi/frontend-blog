@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import Router from "next/router";
 import Layout from "../components/Layout";
-import Cookies from 'js-cookie';
 
 
 const LoginPage: React.FC = () => {
@@ -29,15 +28,7 @@ const LoginPage: React.FC = () => {
       });
     
     if (response.status === 200) {
-        const data = await response.json();
-        const loginDetails = {token: data.token,
-                              username: data.username,
-                              name: data.name,
-                              userId: data.id,
-                              email: data.email,
-                              image: data.image
-        }
-        Cookies.set('loginDetails',JSON.stringify(loginDetails));
+        // const data = await response.json();
         await Router.push("/");
     }
     else {
@@ -87,5 +78,6 @@ const LoginPage: React.FC = () => {
     </Layout>
   );
 };
+
 
 export default LoginPage;

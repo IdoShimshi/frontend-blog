@@ -24,7 +24,7 @@ export default async function handleLogin(req: NextApiRequest, res: NextApiRespo
             email: result.email,
             username: result.username,
             name: result.name,
-            id: result.id,
+            userId: result.id,
             image: result.image
           }
           if (process.env.SECRET){
@@ -32,12 +32,13 @@ export default async function handleLogin(req: NextApiRequest, res: NextApiRespo
             .setProtectedHeader({alg: 'HS256', typ: 'JWT'})
             .sign(new TextEncoder().encode(process.env.SECRET));
           }
-            
           else 
             console.log("secret not set");
+
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify({...userForToken, token: token}));
+        res.setHeader("Set-Cookie", `loginDetails=${JSON.stringify({...userForToken, token: token})}; Path=/;`);
+        res.end();
         // res.status(200).send({...userForToken, token: token})
     }
     else{
