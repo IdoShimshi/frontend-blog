@@ -1,5 +1,5 @@
 CSRF attack instructions:
-1. login to site
+1. login to site (you can use the following info - username: User1, password: user1pass)
 2. press F12, navigate to cookies
 3. copy value of cookie named loginDetails
 4. run the CSRFattack.js script with "node CSRFattack.js"
