@@ -13,5 +13,6 @@ export default defineConfig({
       // implement node event listeners here
     },
     baseUrl: "http://localhost:3000", // Replace this with your actual base URL
+    defaultCommandTimeout: 10000,
   },
 });
