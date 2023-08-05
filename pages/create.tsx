@@ -3,6 +3,7 @@ import Layout from "../components/Layout";
 import Upload from "../components/Upload";
 import Router from "next/router";
 import { getLoginDetails, loginDetailsProp } from "./_app";
+import {setup} from "../lib/csrf"
 
 const Draft: React.FC = () => {
   const [title, setTitle] = useState("");
@@ -104,5 +105,11 @@ const Draft: React.FC = () => {
     </Layout>
   );
 };
+
+export const getServerSideProps = setup(async ({ req, res }) => {
+  return {
+    props: {},
+  };
+ });
 
 export default Draft;
