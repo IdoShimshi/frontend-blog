@@ -142,6 +142,7 @@ const SignupPage: React.FC = () => {
               onChange={handleUsernameChange}
               className={errorFlag && errors.username_errors && errors.username_errors.length > 0 ? 'error' : ''}
               style={{ flex: 1, maxWidth: '200px' }}
+              data-testid="username"
             />
             {errorFlag && errors.username_errors && (
               <span className="error-message">
@@ -160,6 +161,7 @@ const SignupPage: React.FC = () => {
               onChange={handlePasswordChange}
               className={errorFlag && errors.password_errors && errors.password_errors.length > 0 ? 'error' : ''}
               style={{ flex: 1, maxWidth: '200px' }}
+              data-testid="password" // Add data-testid attribute for username input
             />
             {errorFlag && errors.password_errors && (
               <span className="error-message">
@@ -178,6 +180,7 @@ const SignupPage: React.FC = () => {
               onChange={handleEmailChange}
               className={errorFlag && errors.email_errors && errors.email_errors.length > 0 ? 'error' : ''}
               style={{ flex: 1, maxWidth: '200px' }}
+              data-testid="email" // Add data-testid attribute for username input
             />
             {errorFlag && errors.email_errors && (
               <span className="error-message">
@@ -196,6 +199,7 @@ const SignupPage: React.FC = () => {
               onChange={handleNameChange}
               className={errorFlag && errors.name_errors && errors.name_errors.length > 0 ? 'error' : ''}
               style={{ flex: 1, maxWidth: '200px' }}
+              data-testid="name" // Add data-testid attribute for username input
             />
             {errorFlag && errors.name_errors && (
               <span className="error-message">
@@ -205,7 +209,7 @@ const SignupPage: React.FC = () => {
               </span>
             )}
           </div>
-          <button type="submit" style={{ padding: '0.5rem 1rem', width: '289px' }}>Sign Up</button>
+          <button type="submit" data-testid="signup-button" style={{ padding: '0.5rem 1rem', width: '289px' }}>Sign Up</button>
         </form>
         <div>
           {/* maybe change to alert */}

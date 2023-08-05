@@ -10,7 +10,8 @@
     "build": "next build",
     "start": "next start",
     "test": "jest",
-    "coverage": "jest --coverage"
+    "coverage": "jest --coverage",
+    "cypress": "cypress open"
   },
   "dependencies": {
     "@cloudinary/react": "^1.11.2",
@@ -52,6 +53,7 @@
     "@types/node": "18.14.2",
     "@types/react": "18.0.28",
     "babel-jest": "^29.5.0",
+    "cypress": "^12.17.3",
     "jest": "^29.5.0",
     "jest-environment-jsdom": "^29.5.0",
     "prettier-plugin-prisma": "^4.10.0",
