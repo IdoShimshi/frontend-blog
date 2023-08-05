@@ -6,8 +6,8 @@ describe('Login Page', () => {
 
   it('wrong password shows invalid username or password message', () => {
 
-    cy.get('#username').type('testuser');
-    cy.get('#password').type('badpassword');
+    cy.get('#username').type('User1');
+    cy.get('#password').type('user1badpassword');
 
     cy.get('button[type="submit"]').click();
 
@@ -16,8 +16,8 @@ describe('Login Page', () => {
 
   it('log in with test user, expect successfull login and redirection to home page', () => {
 
-    cy.get('#username').type('testuser');
-    cy.get('#password').type('testuser');
+    cy.get('#username').type('User1');
+    cy.get('#password').type('user1pass');
 
     cy.get('button[type="submit"]').click();
 

@@ -25,12 +25,12 @@ describe('Sign Up Page', () => {
 
   });
 
-  it('sign up with testuser username- expect duplicated username', () => {
+  it('sign up with User1 username- expect duplicated username', () => {
     cy.fillSignUpForm({
-      name: 'testuser',
-      email: 'testuser@testuser.com',
-      username: 'testuser',
-      password: 'strongPassword',
+      name: 'User1',
+      email: 'user1@example.com',
+      username: 'User1',
+      password: 'user1pass',
     });
 
     cy.clickSignUpButton();
@@ -58,7 +58,7 @@ describe('Sign Up Page', () => {
     console.log(currentDate)
     cy.fillSignUpForm({
       name: 'Metahnet Kaze',
-      email: currentDateNumberFormat + '@example.com',
+      email: currentDateNumberFormat + '@testmail.com',
       username: currentDateNumberFormat,
       password: password,
     });

@@ -38,8 +38,8 @@ describe("navigation", () => {
 
   cy.visit('/login');
 
-  cy.get('#username').type('testuser');
-  cy.get('#password').type('testuser');
+  cy.get('#username').type('User1');
+  cy.get('#password').type('user1pass');
 
   cy.get('button[type="submit"]').click();
 
