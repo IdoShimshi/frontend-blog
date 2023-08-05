@@ -4,7 +4,7 @@ const Video: React.FC<{ publicId: string }> = ({ publicId }) => {
   const [shouldRender, setShouldRender] = useState(false);
 
   useEffect(() => {
-    if (publicId.length > 0) {
+    if (publicId?.length > 0) {
       setShouldRender(true);
     }
   }, [publicId]);

@@ -153,7 +153,7 @@ const ProfilePage: React.FC = (props) => {
                         {!loginDetails?.image && <UploadImage onUploadImage={handleUploadImage} />}
                         
                     </div>
-                    <button type="submit" style={{ padding: '0.5rem 1rem', width: '289px' }}>Save</button>
+                    <button data-testid="save-button" type="submit" style={{ padding: '0.5rem 1rem', width: '289px' }}>Save</button>
                 </form>
             </div>
         </Layout>
